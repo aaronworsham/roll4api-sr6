@@ -4,8 +4,11 @@ const Runner = require('../models/runner')
 const deepExtend = require('deep-extend')
 const AttributeBlock = require('../models/attributeBlock')
 const SkillBlock = require('../models/skillBlock')
+const TrackBlock = require('../models/trackBlock')
+const Weapon = require('../models/weapon')
 
-// Get all runners
+// GET RUNNERS
+
 router.get('/', async (req, res) => {
   try {
     const runners = await Runner.find()
@@ -15,7 +18,6 @@ router.get('/', async (req, res) => {
   }
 })
 
-// Get one runner
 router.get('/:id', async (req, res) => {
   try {
     const runner = await Runner.findOne({
@@ -29,7 +31,8 @@ router.get('/:id', async (req, res) => {
 
 
 
-// Create one runner
+// CREATE RUNNER
+
 router.post('/', async (req, res) => {
   var data = getBody(req)
 
@@ -50,8 +53,34 @@ router.post('/', async (req, res) => {
     const newRunner = await runner.save()
     res.status(201).json(newRunner)
   } catch (err) {
+    console.log(err)
     res.status(400).json({ message: err.message })
   }
+})
+
+
+//UPDATE RUNNERS
+
+router.put('/:id', async (req, res) =>{
+  var update = new Runner(getBody(req))
+  try{
+    var runner = await Runner.findOne({
+      _id: req.params.id
+    })
+    if(runner instanceof Runner == false){
+      res.status(404).json({message : "No record found"})
+    }
+    else{
+      runner.name = update.name
+      await runner.save();
+      res.status(200).json(runner)
+    }
+  }
+  catch (err) {
+    console.log(err)
+    res.status(500).json({ message: err.message })
+  }   
+
 })
 
 router.put('/:id/attributes', async (req, res) =>{
@@ -70,6 +99,7 @@ router.put('/:id/attributes', async (req, res) =>{
     }
   }
   catch (err) {
+    console.log(err)
     res.status(500).json({ message: err.message })
   }  
 
@@ -91,13 +121,14 @@ router.put('/:id/skills', async (req, res) =>{
     }
   }
   catch (err) {
+    console.log(err)
     res.status(500).json({ message: err.message })
   }   
 
 })
 
 router.put('/:id/tracks', async (req, res) =>{
-  var tracks = new TracksBlock(getBody(req))
+  var tracks = new TrackBlock(getBody(req))
   try{
     var runner = await Runner.findOne({
       _id: req.params.id
@@ -112,10 +143,42 @@ router.put('/:id/tracks', async (req, res) =>{
     }
   }
   catch (err) {
+    console.log(err)
     res.status(500).json({ message: err.message })
   }   
 
 })
+
+router.put('/:id/weapons', async (req, res) =>{
+  var weapons = getBody(req)
+  try{
+    for (var i = weapons.length - 1; i >= 0; i--) {
+      var weapon = new Weapon(weapons[i])
+      var runner = await Runner.findOne({
+        _id: req.params.id
+      })
+      if(runner instanceof Runner == false){
+        res.status(404).json({message : "No Runner found"})
+      }
+      else{
+        runner.weapons.push(weapon)
+        await runner.save();
+        res.status(200).json(runner)
+      }
+    }
+  }
+  catch (err) {
+    console.log(err)
+    res.status(500).json({ message: err.message })
+  }   
+
+})
+
+
+
+
+
+//DELETE RUNNERS
 
 router.delete("/:id", async (req, res) =>{
 
@@ -126,6 +189,7 @@ router.delete("/:id", async (req, res) =>{
     res.status(200).json({message: "ID Deleted"}) 
   }
   catch (err) {
+    console.log(err)
     res.status(500).json({ message: err.message })
   }
 
