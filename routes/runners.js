@@ -183,7 +183,7 @@ router.put('/:id/weapons', async (req, res) =>{
 router.delete("/:id", async (req, res) =>{
 
   try{  
-    await Runner.find({
+    await Runner.findOne({
       _id: req.params.id 
     }).remove() 
     res.status(200).json({message: "ID Deleted"}) 
@@ -194,6 +194,29 @@ router.delete("/:id", async (req, res) =>{
   }
 
 })
+
+router.delete("/:id/weapon/:weapon_id", async (req, res) =>{
+
+  try{  
+    var runner = await Runner.findOne({
+      _id: req.params.id 
+    }) 
+    console.log("Weapon Delete")
+    runner.weapons.id(req.params.weapon_id).remove()
+    await runner.save(function (err) {
+      if (err) return handleError(err);
+      console.log('the subdoc was removed');
+      res.status(200).json({message: "Weapon Deleted"}) 
+    }) 
+  }
+  catch (err) {
+    console.log(err)
+    res.status(500).json({ message: err.message })
+  }
+
+})
+
+
 
 
 function getBody(req){
