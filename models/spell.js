@@ -1,41 +1,41 @@
 const mongoose = require('mongoose')
 
 
-const WeaponSchema = new mongoose.Schema({
+const SpellSchema = new mongoose.Schema({
 	
 		name: {
 			type: String,
 			required: false
 		},
-		arClose : {
-			type: Number,
+		range : {
+			type: String,
 			required: false
 		},
-		arNear : {
-			type: Number,
+		type : {
+			type: String,
 			required: false
 		},
-		arMedium : {
-			type: Number,
-			required: false
-		},
-		arFar : {
-			type: Number,
-			required: false
-		},
-		arExtreme : {
-			type: Number,
+		duration : {
+			type: String,
 			required: false
 		},
 		dv : {
 			type: Number,
 			required: false
 		},
-		dvType : {
+		damage : {
 			type: Number,
+			required: false
+		},
+		damageSpecial : {
+			type: String,
+			required: false
+		},
+		direction: {
+			type: String,
 			required: false
 		}
 	
 });
 
-module.exports = mongoose.model('Weapon', WeaponSchema)
+module.exports = mongoose.model('Spell', SpellSchema)

@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Runner = require('../models/runner')
+const Other = require('../models/other')
 const deepExtend = require('deep-extend')
 const AttributeBlock = require('../models/attributeBlock')
 const SkillBlock = require('../models/skillBlock')
@@ -8,12 +8,12 @@ const TrackBlock = require('../models/trackBlock')
 const Weapon = require('../models/weapon')
 const Armor = require('../models/armor')
 
-// GET RUNNERS
+// GET OTHERS
 
 router.get('/', async (req, res) => {
   try {
-    const runners = await Runner.find()
-    res.json(runners)  
+    const others = await Other.find()
+    res.json(others)  
   } catch (err) {
   	res.status(500).json({ message: err.message })
   }
@@ -21,10 +21,10 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const runner = await Runner.findOne({
+    const other = await Other.findOne({
       _id: req.params.id 
     })
-    res.json(runner)
+    res.json(other)
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
@@ -32,7 +32,7 @@ router.get('/:id', async (req, res) => {
 
 
 
-// CREATE RUNNER
+// CREATE OTHER
 
 router.post('/', async (req, res) => {
   var data = getBody(req)
@@ -48,11 +48,11 @@ router.post('/', async (req, res) => {
     tracks : {}
   }
 
-	const runner = new Runner(doc)
+	const other = new Other(doc)
 
   try {
-    const newRunner = await runner.save()
-    res.status(201).json(newRunner)
+    const newOther = await other.save()
+    res.status(201).json(newOther)
   } catch (err) {
     console.log(err)
     res.status(400).json({ message: err.message })
@@ -60,21 +60,21 @@ router.post('/', async (req, res) => {
 })
 
 
-//UPDATE RUNNERS
+//UPDATE OTHERS
 
 router.put('/:id', async (req, res) =>{
-  var update = new Runner(getBody(req))
+  var update = new Other(getBody(req))
   try{
-    var runner = await Runner.findOne({
+    var other = await Other.findOne({
       _id: req.params.id
     })
-    if(runner instanceof Runner == false){
+    if(other instanceof Other == false){
       res.status(404).json({message : "No record found"})
     }
     else{
-      runner.name = update.name
-      await runner.save();
-      res.status(200).json(runner)
+      other.name = update.name
+      await other.save();
+      res.status(200).json(other)
     }
   }
   catch (err) {
@@ -87,16 +87,16 @@ router.put('/:id', async (req, res) =>{
 router.put('/:id/attributes', async (req, res) =>{
   var attributes = new AttributeBlock(getBody(req))
   try{
-    var runner = await Runner.findOne({
+    var other = await Other.findOne({
       _id: req.params.id
     })
-    if(runner instanceof Runner == false){
+    if(other instanceof Other == false){
       res.status(404).json({message : "No record found"})
     }
     else{
-      runner.attributes = attributes
-      await runner.save();
-      res.status(200).json(runner)
+      other.attributes = attributes
+      await other.save();
+      res.status(200).json(other)
     }
   }
   catch (err) {
@@ -109,16 +109,16 @@ router.put('/:id/attributes', async (req, res) =>{
 router.put('/:id/skills', async (req, res) =>{
   var skills = new SkillBlock(getBody(req))
   try{
-    var runner = await Runner.findOne({
+    var other = await Other.findOne({
       _id: req.params.id
     })
-    if(runner instanceof Runner == false){
+    if(other instanceof Other == false){
       res.status(404).json({message : "No record found"})
     }
     else{
-      runner.skills = skills
-      await runner.save();
-      res.status(200).json(runner)
+      other.skills = skills
+      await other.save();
+      res.status(200).json(other)
     }
   }
   catch (err) {
@@ -131,16 +131,16 @@ router.put('/:id/skills', async (req, res) =>{
 router.put('/:id/tracks', async (req, res) =>{
   var tracks = new TrackBlock(getBody(req))
   try{
-    var runner = await Runner.findOne({
+    var other = await Other.findOne({
       _id: req.params.id
     })
-    if(runner instanceof Runner == false){
+    if(other instanceof Other == false){
       res.status(404).json({message : "No record found"})
     }
     else{
-      runner.tracks = tracks
-      await runner.save();
-      res.status(200).json(runner)
+      other.tracks = tracks
+      await other.save();
+      res.status(200).json(other)
     }
   }
   catch (err) {
@@ -155,16 +155,16 @@ router.put('/:id/weapons', async (req, res) =>{
   try{
     for (var i = weapons.length - 1; i >= 0; i--) {
       var weapon = new Weapon(weapons[i])
-      var runner = await Runner.findOne({
+      var other = await Other.findOne({
         _id: req.params.id
       })
-      if(runner instanceof Runner == false){
-        res.status(404).json({message : "No Runner found"})
+      if(other instanceof Other == false){
+        res.status(404).json({message : "No Other found"})
       }
       else{
-        runner.weapons.push(weapon)
-        await runner.save();
-        res.status(200).json(runner)
+        other.weapons.push(weapon)
+        await other.save();
+        res.status(200).json(other)
       }
     }
   }
@@ -180,16 +180,16 @@ router.put('/:id/armor', async (req, res) =>{
   try{
     for (var i = armorArray.length - 1; i >= 0; i--) {
       var armor = new Armor(armorArray[i])
-      var runner = await Runner.findOne({
+      var other = await Other.findOne({
         _id: req.params.id
       })
-      if(runner instanceof Runner == false){
-        res.status(404).json({message : "No Runner found"})
+      if(other instanceof Other == false){
+        res.status(404).json({message : "No Other found"})
       }
       else{
-        runner.armor.push(armor)
-        await runner.save();
-        res.status(200).json(runner)
+        other.armor.push(armor)
+        await other.save();
+        res.status(200).json(other)
       }
     }
   }
@@ -204,14 +204,14 @@ router.put('/:id/armor', async (req, res) =>{
 
 
 
-//DELETE RUNNERS
+//DELETE OTHERS
 
 router.delete("/:id", async (req, res) =>{
 
   try{  
-    await Runner.deleteOne({
+    await Other.deleteOne({
       _id: req.params.id 
-    })
+    }) 
     res.status(200).json({message: "ID Deleted"}) 
   }
   catch (err) {
@@ -224,12 +224,12 @@ router.delete("/:id", async (req, res) =>{
 router.delete("/:id/weapon/:weapon_id", async (req, res) =>{
 
   try{  
-    var runner = await Runner.findOne({
+    var other = await Other.findOne({
       _id: req.params.id 
     }) 
     console.log("Weapon Delete")
-    runner.weapons.id(req.params.weapon_id).remove()
-    await runner.save(function (err) {
+    other.weapons.id(req.params.weapon_id).remove()
+    await other.save(function (err) {
       if (err) return handleError(err);
       console.log('the subdoc was removed');
       res.status(200).json({message: "Weapon Deleted"}) 
@@ -245,12 +245,12 @@ router.delete("/:id/weapon/:weapon_id", async (req, res) =>{
 router.delete("/:id/armor/:armor_id", async (req, res) =>{
 
   try{  
-    var runner = await Runner.findOne({
+    var other = await Other.findOne({
       _id: req.params.id 
     }) 
     console.log("Armor Delete")
-    runner.armor.id(req.params.armor_id).remove()
-    await runner.save(function (err) {
+    other.armor.id(req.params.armor_id).remove()
+    await other.save(function (err) {
       if (err) return handleError(err);
       console.log('the subdoc was removed');
       res.status(200).json({message: "Armor Deleted"}) 

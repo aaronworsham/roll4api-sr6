@@ -8,7 +8,7 @@ const armorSchema = require('./armor.js').schema
 
 
 
-const runnerSchema = new mongoose.Schema({
+const otherSchema = new mongoose.Schema({
 	name: {
 		type: String,
   	required: true
@@ -22,4 +22,4 @@ const runnerSchema = new mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('Runner', runnerSchema)
+module.exports = mongoose.model('Other', otherSchema)
