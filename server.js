@@ -26,13 +26,16 @@ app.use('/users', userRouter)
 const runnerRouter = require('./routes/runners')
 app.use('/runners', runnerRouter)
 
-const otherRouter = require('./routes/others')
-app.use('/others', otherRouter)
+const npcRouter = require('./routes/npcs')
+app.use('/npcs', npcRouter)
 
 const spellRouter = require('./routes/spells')
 app.use('/spells', spellRouter)
 
 const critterRouter = require('./routes/critters')
 app.use('/critters', critterRouter)
+
+const encounterRouter = require('./routes/encounters')
+app.use('/encounters', encounterRouter)
 
 app.listen(3000, () => console.log('server started'))
