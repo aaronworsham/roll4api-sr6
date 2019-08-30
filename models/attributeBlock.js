@@ -54,6 +54,10 @@ const AttributeBlockSchema = new mongoose.Schema({
 		defenceRating: {
 			type: Number,
 			required: false
+		},
+		initDie: {
+			type: Number,
+			required: false
 		}
 	
 });

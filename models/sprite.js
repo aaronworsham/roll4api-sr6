@@ -14,4 +14,4 @@ const SpriteSchema = new mongoose.Schema({
 	
 });
 
-module.exports = mongoose.model('Armor', SpriteSchema)
+module.exports = mongoose.model('Sprite', SpriteSchema)

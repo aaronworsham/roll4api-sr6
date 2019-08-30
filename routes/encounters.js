@@ -38,6 +38,7 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   var data = getBody(req)
+  console.log(data)
 
   var doc = {
     name : data.name
@@ -78,7 +79,7 @@ router.put('/:id', async (req, res) =>{
 //ADD RUNNER
 
 router.put('/:id/add-runner', async (req, res) =>{
-  var runner = new AttributeBlock(getBody(req))
+  var runner = new Runner(getBody(req))
   try{
     var encounter = await Encounter.findOne({
       _id: req.params.id
@@ -101,7 +102,7 @@ router.put('/:id/add-runner', async (req, res) =>{
 //ADD NPC
 
 router.put('/:id/add-npc', async (req, res) =>{
-  var npc = new AttributeBlock(getBody(req))
+  var npc = new Npc(getBody(req))
   try{
     var encounter = await Encounter.findOne({
       _id: req.params.id
@@ -124,7 +125,7 @@ router.put('/:id/add-npc', async (req, res) =>{
 //ADD DRONE
 
 router.put('/:id/add-drone', async (req, res) =>{
-  var drone = new AttributeBlock(getBody(req))
+  var drone = new Drone(getBody(req))
   try{
     var encounter = await Encounter.findOne({
       _id: req.params.id
@@ -147,7 +148,7 @@ router.put('/:id/add-drone', async (req, res) =>{
 //ADD SPRITE
 
 router.put('/:id/add-sprite', async (req, res) =>{
-  var sprite = new AttributeBlock(getBody(req))
+  var sprite = new Sprite(getBody(req))
   try{
     var encounter = await Encounter.findOne({
       _id: req.params.id
@@ -170,7 +171,7 @@ router.put('/:id/add-sprite', async (req, res) =>{
 //ADD SPIRIT
 
 router.put('/:id/add-spirit', async (req, res) =>{
-  var spirit = new AttributeBlock(getBody(req))
+  var spirit = new Spirit(getBody(req))
   try{
     var encounter = await Encounter.findOne({
       _id: req.params.id
@@ -217,10 +218,16 @@ router.delete("/:id", async (req, res) =>{
 router.delete("/:id/runner/:runner_id", async (req, res) =>{
 
   try{  
-    var encounter = await Encounter.deleteOne({
-      _id: req.params.id, 'runners.id': req.params.runner_id  
-    }) 
-    console.log("Runner Delete")
+    var encounter = await Encounter.updateOne({
+      _id: req.params.id  
+    }, {
+      $pull : {
+        "runners" : {
+          _id : req.params.runner_id 
+        }
+      }
+    })
+    console.log(encounter) 
     res.status(200).json({message: "Runner Deleted"}) 
   }
   catch (err) {
@@ -235,10 +242,16 @@ router.delete("/:id/runner/:runner_id", async (req, res) =>{
 router.delete("/:id/npc/:npc_id", async (req, res) =>{
 
   try{  
-    var encounter = await Encounter.deleteOne({
-      _id: req.params.id, 'npcs.id': req.params.npc_id  
-    }) 
-    console.log("Npc Delete")
+    var encounter = await Encounter.updateOne({
+      _id: req.params.id  
+    }, {
+      $pull : {
+        "npcs" : {
+          _id : req.params.npc_id 
+        }
+      }
+    })
+    console.log(encounter)
     res.status(200).json({message: "Npc Deleted"}) 
   }
   catch (err) {
@@ -253,10 +266,16 @@ router.delete("/:id/npc/:npc_id", async (req, res) =>{
 router.delete("/:id/drone/:drone_id", async (req, res) =>{
 
   try{  
-    var encounter = await Encounter.deleteOne({
-      _id: req.params.id, 'drones.id': req.params.drone_id  
-    }) 
-    console.log("Drone Delete")
+    var encounter = await Encounter.updateOne({
+      _id: req.params.id  
+    }, {
+      $pull : {
+        "drones" : {
+          _id : req.params.drone_id 
+        }
+      }
+    })
+    console.log(encounter)
     res.status(200).json({message: "Drone Deleted"}) 
   }
   catch (err) {
@@ -271,10 +290,16 @@ router.delete("/:id/drone/:drone_id", async (req, res) =>{
 router.delete("/:id/sprite/:sprite_id", async (req, res) =>{
 
   try{  
-    var encounter = await Encounter.deleteOne({
-      _id: req.params.id, 'sprites.id': req.params.sprite_id  
-    }) 
-    console.log("Sprite Delete")
+    var encounter = await Encounter.updateOne({
+      _id: req.params.id  
+    }, {
+      $pull : {
+        "sprite" : {
+          _id : req.params.sprite_id 
+        }
+      }
+    })
+    console.log(encounter)
     res.status(200).json({message: "Sprite Deleted"}) 
   }
   catch (err) {
@@ -289,10 +314,16 @@ router.delete("/:id/sprite/:sprite_id", async (req, res) =>{
 router.delete("/:id/spirit/:spirit_id", async (req, res) =>{
 
   try{  
-    var encounter = await Encounter.deleteOne({
-      _id: req.params.id, 'spirits.id': req.params.spirit_id  
-    }) 
-    console.log("Spirit Delete")
+    var encounter = await Encounter.updateOne({
+      _id: req.params.id  
+    }, {
+      $pull : {
+        "spirit" : {
+          _id : req.params.spirit_id 
+        }
+      }
+    })
+    console.log(encounter)
     res.status(200).json({message: "Spirit Deleted"}) 
   }
   catch (err) {
