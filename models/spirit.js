@@ -1,17 +1,34 @@
 const mongoose = require('mongoose')
+const attributeBlockSchema = require('./attributeBlock.js').schema
+const skillBlockSchema = require('./skillBlock.js').schema
+const trackBlockSchema = require('./trackBlock.js').schema
+const weaponSchema = require('./weapon.js').schema
+const armorSchema = require('./armor.js').schema
 
 
-const SpiritSchema = new mongoose.Schema({
-	
-		name: {
-			type: String,
-			required: false
-		},
-		dr : {
-			type: Number,
-			required: false
-		}
-	
+
+
+const spiritSchema = new mongoose.Schema({
+	name: {
+		type: String,
+  	required: true
+	},
+	onwer: {
+		type: String,
+  	required: false
+	},
+	force: {
+		type: Number,
+		required: false
+	},
+	powers: {
+		type: String,
+  	required: false
+	},
+	attributes: attributeBlockSchema,
+	weapons : [weaponSchema],
+	skills : skillBlockSchema
+
 });
 
-module.exports = mongoose.model('Spirit', SpiritSchema)
+module.exports = mongoose.model('Spirit', spiritSchema)

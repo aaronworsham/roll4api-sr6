@@ -8,7 +8,7 @@ const armorSchema = require('./armor.js').schema
 
 
 
-const otherSchema = new mongoose.Schema({
+const npcSchema = new mongoose.Schema({
 	name: {
 		type: String,
   	required: true
@@ -22,4 +22,4 @@ const otherSchema = new mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('Other', otherSchema)
+module.exports = mongoose.model('Npc', npcSchema)

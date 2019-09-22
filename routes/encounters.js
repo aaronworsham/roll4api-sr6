@@ -39,12 +39,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   var data = getBody(req)
   console.log(data)
-
-  var doc = {
-    name : data.name
-  }
-
-	const encounter = new Encounter(doc)
+	const encounter = new Encounter(data)
 
   try {
     const newEncounter = await encounter.save()

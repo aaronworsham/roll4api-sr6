@@ -38,4 +38,10 @@ app.use('/critters', critterRouter)
 const encounterRouter = require('./routes/encounters')
 app.use('/encounters', encounterRouter)
 
+const droneRouter = require('./routes/drones')
+app.use('/drones', droneRouter)
+
+const vehicleRouter = require('./routes/vehicles')
+app.use('/vehicles', vehicleRouter)
+
 app.listen(3000, () => console.log('server started'))
