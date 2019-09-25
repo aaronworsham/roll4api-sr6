@@ -6,7 +6,11 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 var cors = require('cors')
 
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
+mongoose.connect(process.env.DATABASE_URL, 
+	{ 
+		useNewUrlParser: true,
+		useFindAndModify: false
+	})
 const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('connected to database'))
@@ -29,9 +33,6 @@ app.use('/runners', runnerRouter)
 const npcRouter = require('./routes/npcs')
 app.use('/npcs', npcRouter)
 
-const spellRouter = require('./routes/spells')
-app.use('/spells', spellRouter)
-
 const critterRouter = require('./routes/critters')
 app.use('/critters', critterRouter)
 
@@ -43,5 +44,8 @@ app.use('/drones', droneRouter)
 
 const vehicleRouter = require('./routes/vehicles')
 app.use('/vehicles', vehicleRouter)
+
+const spiritRouter = require('./routes/spirits')
+app.use('/spirits', spiritRouter)
 
 app.listen(3000, () => console.log('server started'))

@@ -4,9 +4,7 @@ const Npc = require('../models/npc')
 const deepExtend = require('deep-extend')
 const AttributeBlock = require('../models/attributeBlock')
 const SkillBlock = require('../models/skillBlock')
-const TrackBlock = require('../models/trackBlock')
 const Weapon = require('../models/weapon')
-const Armor = require('../models/armor')
 
 // GET NPCS
 
@@ -128,27 +126,7 @@ router.put('/:id/skills', async (req, res) =>{
 
 })
 
-router.put('/:id/tracks', async (req, res) =>{
-  var tracks = new TrackBlock(getBody(req))
-  try{
-    var npc = await Npc.findOne({
-      _id: req.params.id
-    })
-    if(npc instanceof Npc == false){
-      res.status(404).json({message : "No record found"})
-    }
-    else{
-      npc.tracks = tracks
-      await npc.save();
-      res.status(200).json(npc)
-    }
-  }
-  catch (err) {
-    console.log(err)
-    res.status(500).json({ message: err.message })
-  }   
 
-})
 
 router.put('/:id/weapons', async (req, res) =>{
   var weapons = getBody(req)
@@ -175,30 +153,6 @@ router.put('/:id/weapons', async (req, res) =>{
 
 })
 
-router.put('/:id/armor', async (req, res) =>{
-  var armorArray = getBody(req)
-  try{
-    for (var i = armorArray.length - 1; i >= 0; i--) {
-      var armor = new Armor(armorArray[i])
-      var npc = await Npc.findOne({
-        _id: req.params.id
-      })
-      if(npc instanceof Npc == false){
-        res.status(404).json({message : "No Npc found"})
-      }
-      else{
-        npc.armor.push(armor)
-        await npc.save();
-        res.status(200).json(npc)
-      }
-    }
-  }
-  catch (err) {
-    console.log(err)
-    res.status(500).json({ message: err.message })
-  }   
-
-})
 
 
 
@@ -242,26 +196,7 @@ router.delete("/:id/weapon/:weapon_id", async (req, res) =>{
 
 })
 
-router.delete("/:id/armor/:armor_id", async (req, res) =>{
 
-  try{  
-    var npc = await Npc.findOne({
-      _id: req.params.id 
-    }) 
-    console.log("Armor Delete")
-    npc.armor.id(req.params.armor_id).remove()
-    await npc.save(function (err) {
-      if (err) return handleError(err);
-      console.log('the subdoc was removed');
-      res.status(200).json({message: "Armor Deleted"}) 
-    }) 
-  }
-  catch (err) {
-    console.log(err)
-    res.status(500).json({ message: err.message })
-  }
-
-})
 
 
 

@@ -16,8 +16,7 @@ const encounterSchema = new mongoose.Schema({
 	npcs: [npcSchema],
 	drones: [droneSchema],
 	critters: [critterSchema],
-	spirits: [spiritSchema],
-	sprites: [spriteSchema]
+	spirits: [spiritSchema]
 });
 
 module.exports = mongoose.model('Encounter', encounterSchema)

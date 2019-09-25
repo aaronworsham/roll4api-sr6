@@ -34,7 +34,11 @@ const WeaponSchema = new mongoose.Schema({
 		dvType : {
 			type: Number,
 			required: false
-		}
+		},
+		targeting : {
+			type: Number,
+			required: false
+		},
 	
 });
 

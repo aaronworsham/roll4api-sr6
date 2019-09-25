@@ -1,17 +1,17 @@
 const express = require('express')
 const router = express.Router()
-const Runner = require('../models/runner')
+const Spirit = require('../models/spirit')
 const deepExtend = require('deep-extend')
 const AttributeBlock = require('../models/attributeBlock')
 const SkillBlock = require('../models/skillBlock')
 const Weapon = require('../models/weapon')
 
-// GET RUNNERS
+// GET SPIRITS
 
 router.get('/', async (req, res) => {
   try {
-    const runners = await Runner.find()
-    res.json(runners)  
+    const spirits = await Spirit.find()
+    res.json(spirits)  
   } catch (err) {
   	res.status(500).json({ message: err.message })
   }
@@ -19,10 +19,10 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const runner = await Runner.findOne({
+    const spirit = await Spirit.findOne({
       _id: req.params.id 
     })
-    res.json(runner)
+    res.json(spirit)
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
@@ -30,7 +30,7 @@ router.get('/:id', async (req, res) => {
 
 
 
-// CREATE RUNNER
+// CREATE SPIRIT
 
 router.post('/', async (req, res) => {
   var data = getBody(req)
@@ -38,19 +38,20 @@ router.post('/', async (req, res) => {
   var doc = {
 
     name : data.name,
-    owner: null,
+    owner: data.owner,
+    force: data.force,
+    powers: data.powers,
     icon: null,
     portrait: null,
     attributes : {},
-    skills : {},
-    tracks : {}
+    skills : {}
   }
 
-	const runner = new Runner(doc)
+	const spirit = new Spirit(doc)
 
   try {
-    const newRunner = await runner.save()
-    res.status(201).json(newRunner)
+    const newSpirit = await spirit.save()
+    res.status(201).json(newSpirit)
   } catch (err) {
     console.log(err)
     res.status(400).json({ message: err.message })
@@ -58,21 +59,24 @@ router.post('/', async (req, res) => {
 })
 
 
-//UPDATE RUNNERS
+//UPDATE SPIRITS
 
 router.put('/:id', async (req, res) =>{
-  var update = new Runner(getBody(req))
+  var update = new Spirit(getBody(req))
   try{
-    var runner = await Runner.findOne({
+    var spirit = await Spirit.findOne({
       _id: req.params.id
     })
-    if(runner instanceof Runner == false){
+    if(spirit instanceof Spirit == false){
       res.status(404).json({message : "No record found"})
     }
     else{
-      runner.name = update.name
-      await runner.save();
-      res.status(200).json(runner)
+      spirit.name = update.name
+      spirit.owner =  update.owner
+      spirit.force = update.force
+      spirit.powers = update.powers
+      await spirit.save();
+      res.status(200).json(spirit)
     }
   }
   catch (err) {
@@ -85,16 +89,16 @@ router.put('/:id', async (req, res) =>{
 router.put('/:id/attributes', async (req, res) =>{
   var attributes = new AttributeBlock(getBody(req))
   try{
-    var runner = await Runner.findOne({
+    var spirit = await Spirit.findOne({
       _id: req.params.id
     })
-    if(runner instanceof Runner == false){
+    if(spirit instanceof Spirit == false){
       res.status(404).json({message : "No record found"})
     }
     else{
-      runner.attributes = attributes
-      await runner.save();
-      res.status(200).json(runner)
+      spirit.attributes = attributes
+      await spirit.save();
+      res.status(200).json(spirit)
     }
   }
   catch (err) {
@@ -107,16 +111,16 @@ router.put('/:id/attributes', async (req, res) =>{
 router.put('/:id/skills', async (req, res) =>{
   var skills = new SkillBlock(getBody(req))
   try{
-    var runner = await Runner.findOne({
+    var spirit = await Spirit.findOne({
       _id: req.params.id
     })
-    if(runner instanceof Runner == false){
+    if(spirit instanceof Spirit == false){
       res.status(404).json({message : "No record found"})
     }
     else{
-      runner.skills = skills
-      await runner.save();
-      res.status(200).json(runner)
+      spirit.skills = skills
+      await spirit.save();
+      res.status(200).json(spirit)
     }
   }
   catch (err) {
@@ -132,16 +136,16 @@ router.put('/:id/weapons', async (req, res) =>{
   try{
     for (var i = weapons.length - 1; i >= 0; i--) {
       var weapon = new Weapon(weapons[i])
-      var runner = await Runner.findOne({
+      var spirit = await Spirit.findOne({
         _id: req.params.id
       })
-      if(runner instanceof Runner == false){
-        res.status(404).json({message : "No Runner found"})
+      if(spirit instanceof Spirit == false){
+        res.status(404).json({message : "No Spirit found"})
       }
       else{
-        runner.weapons.push(weapon)
-        await runner.save();
-        res.status(200).json(runner)
+        spirit.weapons.push(weapon)
+        await spirit.save();
+        res.status(200).json(spirit)
       }
     }
   }
@@ -157,14 +161,14 @@ router.put('/:id/weapons', async (req, res) =>{
 
 
 
-//DELETE RUNNERS
+//DELETE SPIRITS
 
 router.delete("/:id", async (req, res) =>{
 
   try{  
-    await Runner.deleteOne({
+    await Spirit.deleteOne({
       _id: req.params.id 
-    })
+    }) 
     res.status(200).json({message: "ID Deleted"}) 
   }
   catch (err) {
@@ -177,12 +181,12 @@ router.delete("/:id", async (req, res) =>{
 router.delete("/:id/weapon/:weapon_id", async (req, res) =>{
 
   try{  
-    var runner = await Runner.findOne({
+    var spirit = await Spirit.findOne({
       _id: req.params.id 
     }) 
     console.log("Weapon Delete")
-    runner.weapons.id(req.params.weapon_id).remove()
-    await runner.save(function (err) {
+    spirit.weapons.id(req.params.weapon_id).remove()
+    await spirit.save(function (err) {
       if (err) return handleError(err);
       console.log('the subdoc was removed');
       res.status(200).json({message: "Weapon Deleted"}) 

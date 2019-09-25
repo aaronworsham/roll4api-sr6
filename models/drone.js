@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const weaponSchema = require('./weapon.js').schema
 
 
 const DroneSchema = new mongoose.Schema({
@@ -20,34 +21,6 @@ const DroneSchema = new mongoose.Schema({
 			required: false
 		},
 		ownerPiloting: {
-			type: Number,
-			required: false
-		},
-		arClose : {
-			type: Number,
-			required: false
-		},
-		arNear : {
-			type: Number,
-			required: false
-		},
-		arMedium : {
-			type: Number,
-			required: false
-		},
-		arFar : {
-			type: Number,
-			required: false
-		},
-		arExtreme : {
-			type: Number,
-			required: false
-		},
-		dv : {
-			type: Number,
-			required: false
-		},
-		dvType : {
 			type: Number,
 			required: false
 		},
@@ -87,6 +60,27 @@ const DroneSchema = new mongoose.Schema({
 			type: Number,
 			required: false
 		},
+		clearsight : {
+			type: Number,
+			required: false
+		},
+		electronicWarfare : {
+			type: Number,
+			required: false
+		},
+		evasion : {
+			type: Number,
+			required: false
+		},
+		maneuvering : {
+			type: Number,
+			required: false
+		},
+		stealth : {
+			type: Number,
+			required: false
+		},
+		weapons : [weaponSchema],
 
 
 	
